@@ -3,6 +3,7 @@ package dk.e5pme.githupapi
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
         // Creates a vertical Layout Manager
         mainRecyclerView.layoutManager = LinearLayoutManager(this)
         mainRecyclerView.adapter= AnimalAdapter(animals, this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     data class Animal(val name: String, val race: String, val gender: String ,val weight: String)
