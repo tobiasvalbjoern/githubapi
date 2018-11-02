@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        >
+
+    <TextView
+            android:id="@+id/custom_list_item_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:background="#fff176"/>
+
+    <TextView
+            android:id="@+id/custom_list_item_race"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#ff8a65"/>
+
+    <TextView
+            android:id="@+id/custom_list_item_gender"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#a1887f"/>
+
+    <TextView
+            android:id="@+id/custom_list_item_weight"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#90a4ae"/>
+
+
+</LinearLayout>
