@@ -7,10 +7,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_main.*
+
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,11 +35,32 @@ class MainActivity : AppCompatActivity() {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 Toast.makeText(this@MainActivity,query,Toast.LENGTH_SHORT).show()
-                // doMySearch(query)
+                requestGithubSearchAPI(query)
             }
         }
 
 
+    }
+
+    //this function is not tested. The error message says that it needs internet permissions.
+    private fun requestGithubSearchAPI(query : String) {
+        val params = hashMapOf("q" to "language:kotlin", "sort" to "stars", "order" to "desc")
+
+        "https://api.github.com/search/repositories?q={$query}".httpGet().responseString { request, response, result ->
+            Log.d("API", request.toString())
+            Log.d("API", response.toString())
+            when (result) {
+                is Result.Failure -> {
+                    val ex = result.getException()
+                    Toast.makeText(this@MainActivity,ex.toString(),Toast.LENGTH_SHORT).show()
+                }
+                is Result.Success -> {
+                    val data = result.get()
+                    Toast.makeText(this@MainActivity,data,Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
