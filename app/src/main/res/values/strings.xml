@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">RecycleView</string>
+    <string name="app_name">githubapi</string>
+    <string name="search_hint">Search for a Github repository</string>
+    <string name="search">search</string>
 </resources>
