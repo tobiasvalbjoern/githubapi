@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
@@ -15,21 +16,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
 
-    // Initializing an empty ArrayList to be filled with animals
-    private val animals: ArrayList<String> = ArrayList()
+    private val adapter = GithubSearchResultAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        addAnimals()
         // Creates a vertical Layout Manager
         mainRecyclerView.layoutManager = LinearLayoutManager(this)
-        mainRecyclerView.adapter= AnimalAdapter(animals, this)
+        mainRecyclerView.adapter= adapter
 
         // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent.action) {
@@ -38,8 +38,10 @@ class MainActivity : AppCompatActivity() {
                 requestGithubSearchAPI(query)
             }
         }
+    }
 
-
+    private fun updateUI(items: List<GithubSearchResultItem>) {
+        adapter.searchResults = items
     }
 
     //this function is not tested. The error message says that it needs internet permissions.
@@ -57,7 +59,9 @@ class MainActivity : AppCompatActivity() {
                 is Result.Success -> {
                     val data = result.get()
                     Toast.makeText(this@MainActivity,data,Toast.LENGTH_SHORT).show()
-
+                    val json = JSONObject(data)
+                    val results = githubSearchResultItemsFromJsonArray(json.getJSONArray("items"))
+                    updateUI(results)
                 }
             }
         }
@@ -75,47 +79,6 @@ class MainActivity : AppCompatActivity() {
         }
         //return super.onCreateOptionsMenu(menu)
         return true
-
-
-
-    }
-
-    data class Animal(val name: String, val race: String, val gender: String ,val weight: String)
-
-    // Adds animals to the empty animals ArrayList
-    private fun addAnimals() {
-        animals.add("dog")
-        animals.add("cat")
-        animals.add("owl")
-        animals.add("cheetah")
-        animals.add("raccoon")
-        animals.add("bird")
-        animals.add("snake")
-        animals.add("lizard")
-        animals.add("hamster")
-        animals.add("bear")
-        animals.add("lion")
-        animals.add("tiger")
-        animals.add("horse")
-        animals.add("frog")
-        animals.add("fish")
-        animals.add("shark")
-        animals.add("turtle")
-        animals.add("elephant")
-        animals.add("cow")
-        animals.add("beaver")
-        animals.add("bison")
-        animals.add("porcupine")
-        animals.add("rat")
-        animals.add("mouse")
-        animals.add("goose")
-        animals.add("deer")
-        animals.add("fox")
-        animals.add("moose")
-        animals.add("buffalo")
-        animals.add("monkey")
-        animals.add("penguin")
-        animals.add("parrot")
     }
     }
 

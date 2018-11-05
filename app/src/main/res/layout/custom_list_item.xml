@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        >
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="8dp"
+>
 
-    <TextView
-            android:id="@+id/custom_list_item_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:background="#fff176"/>
+<TextView
+        android:id="@+id/searchResultTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/textAppearanceSearchResultTitle"
+        tools:text="Anko"
+/>
 
-    <TextView
-            android:id="@+id/custom_list_item_race"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="#ff8a65"/>
+<TextView
+        android:id="@+id/searchResultSubtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchResultTitleText"
+        style="?attr/textAppearanceSearchResultSubtitle"
+        tools:text="Jetbrains"
+/>
 
-    <TextView
-            android:id="@+id/custom_list_item_gender"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="#a1887f"/>
+<TextView
+        android:id="@+id/searchResultDescriptionText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchResultSubtitleText"
+        android:layout_marginTop="8dp"
+        android:maxLines="2"
+        tools:text="Pleasant Android application development, Pleasant Android application development"
+/>
 
-    <TextView
-            android:id="@+id/custom_list_item_weight"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="#90a4ae"/>
+<TextView
+        android:id="@+id/searchResultStargazerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/searchResultTitleText"
+        android:layout_alignBottom="@id/searchResultTitleText"
+        android:layout_alignParentEnd="true"
+        android:gravity="right"
+        android:drawablePadding="4dp"
+        tools:text="999"
+/>
 
-
-</LinearLayout>
+</RelativeLayout>
