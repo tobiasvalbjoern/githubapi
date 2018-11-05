@@ -26,27 +26,22 @@ class GithubSearchResultAdapter(private val context: Context) : RecyclerView.Ada
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
-        //return items.size
         return searchResults.count()
     }
 
     // Binds each animal in the ArrayList to a view
     override fun onBindViewHolder(viewHolder: SearchResultViewHolder, pos: Int) {
-        //holder.tvAnimalType?.text = items[pos]
-
         val item = searchResults[pos]
         viewHolder.view.searchResultTitleText.text = item.repoName
         viewHolder.view.searchResultSubtitleText.text = item.ownerName
         viewHolder.view.searchResultDescriptionText.text = item.repoDescription
         viewHolder.view.searchResultStargazerCount.text = item.stargazerCount.toString()
-
     }
-
 }
 
 class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-    private var clickListener: ((View) -> Unit)? = null
+    var clickListener: ((View) -> Unit)? = null
 
     init {
         view.setOnClickListener {
@@ -55,10 +50,3 @@ class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     }
 
 }
-
-/*
-class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    // Holds the TextView that will add each animal to
-    val tvAnimalType: TextView? = view.custom_list_item_name
-}
-        */

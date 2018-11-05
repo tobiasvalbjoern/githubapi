@@ -44,13 +44,8 @@ class MainActivity : AppCompatActivity() {
         adapter.searchResults = items
     }
 
-    //this function is not tested. The error message says that it needs internet permissions.
     private fun requestGithubSearchAPI(query : String) {
-        val params = hashMapOf("q" to "language:kotlin", "sort" to "stars", "order" to "desc")
-
-        "https://api.github.com/search/repositories?q={$query}".httpGet().responseString { request, response, result ->
-            Log.d("API", request.toString())
-            Log.d("API", response.toString())
+        "https://api.github.com/search/repositories?q=$query+language:kotlin&sort=stars".httpGet().responseString { request, response, result ->
             when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
@@ -58,7 +53,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Result.Success -> {
                     val data = result.get()
-                    Toast.makeText(this@MainActivity,data,Toast.LENGTH_SHORT).show()
                     val json = JSONObject(data)
                     val results = githubSearchResultItemsFromJsonArray(json.getJSONArray("items"))
                     updateUI(results)
@@ -80,5 +74,7 @@ class MainActivity : AppCompatActivity() {
         //return super.onCreateOptionsMenu(menu)
         return true
     }
-    }
+
+
+}
 
