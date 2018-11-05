@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.widget.Toast
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-               // doMySearch(query)
+                Toast.makeText(this@MainActivity,query,Toast.LENGTH_SHORT).show()
+                // doMySearch(query)
             }
         }
 
