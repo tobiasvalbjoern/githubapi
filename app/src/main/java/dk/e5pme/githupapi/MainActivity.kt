@@ -6,26 +6,40 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_main.*
-
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
-import org.json.JSONObject
-
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
-    private val adapter = GithubSearchResultAdapter(this)
+    private lateinit var adapter: GithubSearchResultAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Create Adapter
+        adapter = GithubSearchResultAdapter(this)
+        adapter.setOnItemClickListener(object : ClickListener {
+            override fun onItemClick(position: Int, item: GithubRepoItem) {
+                Toast.makeText(this@MainActivity,item.name.toString(),Toast.LENGTH_SHORT).show()
+                val i = Intent(this@MainActivity, viewRepo::class.java)
+                i.putExtra("description",item.description)
+                i.putExtra("name",item.name)
+                i.putExtra("stars",item.stargazerCount.toString())
+                i.putExtra("date",item.updated_at)
+                i.putExtra("url",item.url)
+                i.putExtra("avatar_url",item.owner.avatar_url)
+
+                startActivity(i)
+            }
+        })
 
         // Creates a vertical Layout Manager
         mainRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -40,12 +54,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI(items: List<GithubSearchResultItem>) {
-        adapter.searchResults = items
+
+    private fun updateUI(items: List<GithubRepoItem>) {
+        runOnUiThread {
+            adapter.searchResults = items
+        }
     }
 
     private fun requestGithubSearchAPI(query : String) {
         "https://api.github.com/search/repositories?q=$query+language:kotlin&sort=stars".httpGet().responseString { request, response, result ->
+            Log.d("API", request.toString())
+            Log.d("API", response.toString())
+
             when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
@@ -53,9 +73,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Result.Success -> {
                     val data = result.get()
-                    val json = JSONObject(data)
-                    val results = githubSearchResultItemsFromJsonArray(json.getJSONArray("items"))
-                    updateUI(results)
+                    val gson = Gson()
+                    val parsedResult = gson.fromJson(data, GitHubResponse::class.java)
+                    updateUI(parsedResult.items)
                 }
             }
         }
@@ -71,8 +91,7 @@ class MainActivity : AppCompatActivity() {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
         }
-        //return super.onCreateOptionsMenu(menu)
-        return true
+        return super.onCreateOptionsMenu(menu)
     }
 
 

@@ -1,31 +1,14 @@
 package dk.e5pme.githupapi
 
-import org.json.JSONArray
-import org.json.JSONObject
+import com.google.gson.annotations.SerializedName
 
-data class GithubSearchResultItem(var repoName: String = "",
-                                  var ownerName: String = "",
-                                  var repoDescription: String = "",
-                                  var stargazerCount: Int = 0,
-                                  var htmlLink: String = "")
+data class GitHubResponse(var items: ArrayList<GithubRepoItem>)
 
-fun githubSearchResultItemFromJSONObject(json: JSONObject): GithubSearchResultItem {
-    return json.asSequence().fold(GithubSearchResultItem()) { result, pair ->
-        val (key, value) = pair
-        when (key) {
-            "name" -> result.repoName = value as String
-            "owner" -> result.ownerName = (value as JSONObject).getString("login")
-            "description" -> result.repoDescription = value as String
-            "stargazers_count" -> result.stargazerCount = value as Int
-            "html_url" -> result.htmlLink = value as String
-        }
-        result
-    }
-}
+data class GithubRepoItem(var name: String,
+                          var owner: GithubRepoOwner,
+                          var description: String,
+                          @SerializedName("stargazers_count") var stargazerCount: Int,
+                          var url: String,
+                          var updated_at:String)
 
-fun githubSearchResultItemsFromJsonArray(json: JSONArray): List<GithubSearchResultItem> {
-    return json.asSequence().fold(arrayListOf()) { list, item ->
-        list.add(githubSearchResultItemFromJSONObject(item as JSONObject))
-        list
-    }
-}
+data class GithubRepoOwner(var login: String, var avatar_url:String)
