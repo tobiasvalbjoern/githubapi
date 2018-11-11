@@ -12,6 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/name"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="44dp" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/description"/>
@@ -20,6 +21,7 @@
             android:layout_width="349dp"
             android:layout_height="156dp"
             android:id="@+id/description"
+            android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.421" android:layout_marginBottom="96dp"
@@ -30,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/star_descr"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="52dp"
             android:layout_marginTop="8dp"
@@ -47,6 +50,7 @@
             android:text="created"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:id="@+id/date_descr"
             android:layout_marginTop="40dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
@@ -63,10 +67,18 @@
             android:text="Open in Github"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button"
+            android:id="@+id/repoBtn"
             android:layout_marginBottom="28dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"/>
+    <ImageView
+            android:layout_width="161dp"
+            android:layout_height="173dp" tools:srcCompat="@tools:sample/avatars"
+            android:id="@+id/avatar_url"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/date" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/description"/>
 
 
 </android.support.constraint.ConstraintLayout>

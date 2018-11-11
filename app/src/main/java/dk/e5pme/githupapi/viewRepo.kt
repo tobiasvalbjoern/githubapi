@@ -2,10 +2,13 @@ package dk.e5pme.githupapi
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_view_repo.*
-import kotlinx.android.synthetic.main.activity_view_repo.view.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import android.content.Intent
+import android.net.Uri
+import com.bumptech.glide.Glide
 
 class viewRepo : AppCompatActivity() {
 
@@ -17,9 +20,18 @@ class viewRepo : AppCompatActivity() {
         name.text=extras.getString("name")
         description.text=extras.getString("description")
         stars.text=extras.getString("stars")
-        Toast.makeText(this, extras.getString("stars"), Toast.LENGTH_SHORT).show()
-        date.text=extras.getString("date")
-        val url=extras.getString("url")
-        val avatar_url=extras.getString("avatar_url")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val timestamp = LocalDate.parse(extras.getString("date"),formatter).toString()
+        date.text=timestamp
+
+        Glide.with(this)
+            .load(extras.getString("avatar_url"))
+            .into(avatar_url)
+
+        repoBtn.setOnClickListener{
+            val implicit = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString("html_url")))
+            startActivity(implicit)
+        }
     }
+
 }

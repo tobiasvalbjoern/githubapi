@@ -28,15 +28,13 @@ class MainActivity : AppCompatActivity() {
         adapter = GithubSearchResultAdapter(this)
         adapter.setOnItemClickListener(object : ClickListener {
             override fun onItemClick(position: Int, item: GithubRepoItem) {
-                Toast.makeText(this@MainActivity,item.name.toString(),Toast.LENGTH_SHORT).show()
                 val i = Intent(this@MainActivity, viewRepo::class.java)
                 i.putExtra("description",item.description)
                 i.putExtra("name",item.name)
                 i.putExtra("stars",item.stargazerCount.toString())
                 i.putExtra("date",item.updated_at)
-                i.putExtra("url",item.url)
                 i.putExtra("avatar_url",item.owner.avatar_url)
-
+                i.putExtra("html_url",item.owner.html_url)
                 startActivity(i)
             }
         })
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                Toast.makeText(this@MainActivity,query,Toast.LENGTH_SHORT).show()
                 requestGithubSearchAPI(query)
             }
         }
