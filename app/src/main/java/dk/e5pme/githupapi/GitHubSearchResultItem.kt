@@ -12,3 +12,4 @@ data class GithubRepoItem(var name: String,
                           var updated_at:String)
 
 data class GithubRepoOwner(var login: String, var avatar_url:String, var html_url:String)
+

@@ -1,3 +1,20 @@
+/*
+*  https://www.raywenderlich.com/367-android-recyclerview-tutorial-with-kotlin
+*  The truth is that ListViews and GridViews only do half the job of achieving
+*  true memory efficiency. They recycle the item layout, but don’t keep references
+*  to the layout children, forcing you to call findViewById() for every child of your item layout
+*  every time you call getView(). All this calling around can become very processor-intensive,
+*  especially for complicated layouts. Furthermore, the situation can cause your ListView scrolling
+*  to become jerky or non-responsive as it frantically tries to grab references
+*  to the views you need.
+*  Android engineers initially provided a solution to this problem on the Android Developers
+*  site with smooth scrolling, via the power of the View Holder pattern.
+*  When you use this pattern, you create a class that becomes an in-memory reference
+*  to all the views needed to fill your layout.
+*  The benefit is you set the references once and reuse them, effectively working around the performance hit that comes with repeatedly calling findViewById().
+*  The problem is that it’s an optional pattern for a ListView or GridView. If you’re unaware of this detail,
+*  then you may wonder why your precious ListViews and GridViews are so slow.
+*/
 package dk.e5pme.githupapi
 
 import android.app.SearchManager
@@ -6,20 +23,23 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import dk.e5pme.githubapi.R
 import kotlinx.android.synthetic.main.activity_main.*
+
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: GithubSearchResultAdapter
-
+    private lateinit var linearLayoutManager: LinearLayoutManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +60,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         // Creates a vertical Layout Manager
-        mainRecyclerView.layoutManager = LinearLayoutManager(this)
+        //Layout Managers are used to position views inside the RecyclerView.
+        // They also determine when to reuse item views that are no longer visible to the user.
+        linearLayoutManager=LinearLayoutManager(this)
+        mainRecyclerView.layoutManager = linearLayoutManager
+        //The adapter creates new items in the form of ViewHolders, populates the ViewHolders with data,
+        // and returns information about the data.
         mainRecyclerView.adapter= adapter
 
         // Verify the action and get the query
@@ -50,16 +75,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
     private fun updateUI(items: List<GithubRepoItem>) {
         runOnUiThread {
             adapter.searchResults = items
         }
     }
-
     private fun requestGithubSearchAPI(query : String) {
-        "https://api.github.com/search/repositories?q=$query+language:kotlin&sort=stars".httpGet().responseString { request, response, result ->
+        "https://api.github.com/search/repositories?q=$query+language:kotlin&sort=stars".httpGet().responseString {
+                request, response, result ->
             Log.d("API", request.toString())
             Log.d("API", response.toString())
 
@@ -77,7 +100,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
 
@@ -90,7 +112,5 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onCreateOptionsMenu(menu)
     }
-
-
 }
 

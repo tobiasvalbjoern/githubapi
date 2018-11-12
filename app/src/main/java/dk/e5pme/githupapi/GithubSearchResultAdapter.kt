@@ -15,7 +15,9 @@ interface ClickListener {
     fun onItemClick(position: Int, item: GithubRepoItem)
 }
 
+//implement a recycler view adapter
 class GithubSearchResultAdapter(private val context: Context) : RecyclerView.Adapter<GithubSearchResultAdapter.SearchResultViewHolder>() {
+
 
     var clickListener: ClickListener = object : ClickListener {
         override fun onItemClick(position: Int, item: GithubRepoItem) {
@@ -45,7 +47,8 @@ class GithubSearchResultAdapter(private val context: Context) : RecyclerView.Ada
         clickListener = listener
     }
 
-    // Binds each animal in the ArrayList to a view
+    // Binds each element to a specific view
+    // The viewholder is used to cache the view objects in order to save memory
     override fun onBindViewHolder(viewHolder: SearchResultViewHolder, pos: Int) {
         val item = searchResults[pos]
         viewHolder.view.searchResultTitleText.text = item.name
